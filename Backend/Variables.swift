@@ -19,7 +19,6 @@ var string1 = """
 .pos 256
 t:
     .quad 1
-    .quad 2
 x:
     .quad 4
 y:
@@ -36,8 +35,13 @@ var register_file = RegisterFile()
 var string_instr = "mrmovq src(%rcx), %rdx"
 var instruction_string_code =
 """
-irmovq $8, %rcx\n
-subq %rdx, %r9\n
+irmovq $8, %rcx
+subq %rdx, %r9
+jmp Lend
+Lhat:
+    irmovq $123, %rdx
+Lend:
+    mrmovq t, %r8
 halt
 """
 var instruction_list = Instruction.parseMultipleString(string: instruction_string_code)

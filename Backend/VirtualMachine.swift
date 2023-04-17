@@ -36,7 +36,7 @@ class VirtualMachine : ObservableObject {
     }
     
     func updateConditionCode(valRA: Int, valRB: Int) {
-        var newVal = valRA.addingReportingOverflow(valRB)
+        let newVal = valRA.addingReportingOverflow(valRB)
         if newVal.partialValue == 0 {
             ConditionCode["ZF"] = 1
             ConditionCode["OF"] = 0
@@ -60,19 +60,16 @@ class VirtualMachine : ObservableObject {
     }
     
     func jump(instruction: Instruction){
-        var newAddress : Int
-        do {
-            try newAddress = memoryBoard.getLabelAddress(label: instruction.D)
-            programCounter = newAddress
-            self.programCounter -= getByteInstruction(by: instruction.mnemonic)
-        } catch let error{
-            print(error.localizedDescription)
-        }
+            for (address, item) in instructionBoard {
+                if item.label == instruction.D {
+                    programCounter = address - getByteInstruction(by: instruction.mnemonic)
+                }
+            }
     }
     
     func executeInstruction(instruction: Instruction) {
-        var valRA = registerFile.files[instruction.rA]!
-        var valRB = registerFile.files[instruction.rB]!
+        let valRA = registerFile.files[instruction.rA] ?? 0
+        let valRB = registerFile.files[instruction.rB] ?? 0
         
         switch(instruction.mnemonic){
         case .halt:

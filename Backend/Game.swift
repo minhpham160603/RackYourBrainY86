@@ -12,6 +12,7 @@ class Game : ObservableObject {
     @Published var userRegisterFile : RegisterFile
     @Published var userMemoryBoard : MemoryBoard
     @Published var userCurrentCounter : Int
+    @Published var userConditionCode = ["OF":0, "ZF":0, "SF":0]
     
     init(instructionList: [Instruction], memoryItemList : [Item]) {
         virtualMachine = VirtualMachine(instructionList: instructionList, memoryItemList: memoryItemList)
@@ -43,7 +44,14 @@ class Game : ObservableObject {
         return RegisterFile.validateFile(userRegisterFile: userRegisterFile, machineRegisterFile: virtualMachine.registerFile)
     }
     
+    func gameEnd() -> Bool {
+        return virtualMachine.instructionBoard[self.userCurrentCounter]?.mnemonic == .halt
+    }
+    
     func validateStep() -> Bool {
+        if gameEnd() {
+            return true
+        }
         var newCounter = userCurrentCounter
         if validateMemoryBoard() && validateRegisterBoard() {
             do {

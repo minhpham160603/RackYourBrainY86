@@ -71,14 +71,16 @@ enum InstructionDecodeError : Error {
     case invalidInstruction
 }
 
-struct Instruction : Identifiable {
+class Instruction : Identifiable, ObservableObject {
     let mnemonic : MNEMONIC
     let rA : REGISTER
     let rB : REGISTER
     let D: String
     let V: String
     let id = UUID()
+    var label : String
     var isExecuted: Bool = false
+    @Published var showPopOver = false 
     
     init() {
         self.mnemonic = .undefine
@@ -86,18 +88,19 @@ struct Instruction : Identifiable {
         self.rB = .F
         self.D = ""
         self.V = ""
+        self.label = ""
     }
     
-    init(mnemonic: MNEMONIC, rA: REGISTER = REGISTER.F, rB: REGISTER = REGISTER.F, D: String = "", V: String = ""){
+    init(mnemonic: MNEMONIC, rA: REGISTER = REGISTER.F, rB: REGISTER = REGISTER.F, D: String = "", V: String = "", label: String = ""){
         self.mnemonic = mnemonic
         self.rA = rA
         self.rB = rB
         self.D = D
         self.V = V
+        self.label = label
     }
     
     static func parseString(_ string: String) throws ->  Instruction {
-        
         let separators = CharacterSet(charactersIn: " ,()")
         let partition = string.components(separatedBy: separators).filter {!$0.isEmpty}
         let numbers: Set<Int> = [1, 2, 3, 4]
@@ -191,21 +194,29 @@ struct Instruction : Identifiable {
     }
     
     static func parseMultipleString(string: String) -> [Instruction] {
+        var index = 0
+        var instructionList : [Instruction] = []
         let partition = string.components(separatedBy: "\n").filter {
             $0.count > 0
         }
-        let instruction_list = partition.map {instr in
-            {
-                try Instruction.parseString(instr)
+        while index < partition.count {
+            var instruction : Instruction
+            var label = ""
+            if partition[index].contains(":") {
+                label = String(partition[index].prefix(while: {$0 != ":"}))
+                index += 1
             }
+            do {
+                instruction = try parseString(partition[index])
+                instruction.label = label
+            } catch {
+                print("Contain unvalid instruction")
+                return []
+            }
+            instructionList.append(instruction)
+            index += 1
         }
-        do {
-            let result = try instruction_list.map {try $0()}
-            return result
-        } catch {
-            print("Contain invalid instruction!")
-            return []
-        }
+        return instructionList
     }
     
     static func getTextFromList(_ instruction_list: [Instruction]) -> String {
@@ -217,47 +228,51 @@ struct Instruction : Identifiable {
     }
     
     func getText() -> String {
+        var outputString = ""
         switch(self.mnemonic){
         case .halt:
-            return "halt"
+            outputString = "halt"
         case .nop:
-            return "nop"
+            outputString = "nop"
         case .irmovq:
-            return "irmovq \t \(self.V), \(self.rB.rawValue)"
+            outputString = "irmovq \t \(self.V), \(self.rB.rawValue)"
         case .rmmovq:
             if self.rB != .F {
-                return "rmmovq \t \(self.rA.rawValue), \(self.D)(\(self.rB.rawValue))"
+                outputString = "rmmovq \t \(self.rA.rawValue), \(self.D)(\(self.rB.rawValue))"
+            } else {
+                outputString = "rmmovq \t \(self.rA.rawValue), \(self.D)"
             }
-            return "rmmovq \t \(self.rA.rawValue), \(self.D)"
         case .mrmovq:
             if self.rB != .F {
-                return "mrmovq \t \(self.rA.rawValue), \(self.D)(\(self.rB.rawValue))"
+                outputString = "mrmovq \t \(self.rA.rawValue), \(self.D)(\(self.rB.rawValue))"
+            } else {
+                outputString = "mrmovq \t \(self.D), \(self.rA.rawValue)"
             }
-            return "mrmovq \t \(self.D), \(self.rA.rawValue)"
         case .addq:
-            return "addq \t \(self.rA.rawValue), \(self.rB.rawValue)"
+            outputString = "addq \t \(self.rA.rawValue), \(self.rB.rawValue)"
         case .subq:
-            return "subq \t \(self.rA.rawValue), \(self.rB.rawValue)"
+            outputString = "subq \t \(self.rA.rawValue), \(self.rB.rawValue)"
         case .andq:
-            return "andq \t \(self.rA.rawValue), \(self.rB.rawValue)"
+            outputString = "andq \t \(self.rA.rawValue), \(self.rB.rawValue)"
         case .xorq:
-            return "xorq \t \(self.rA.rawValue), \(self.rB.rawValue)"
+            outputString = "xorq \t \(self.rA.rawValue), \(self.rB.rawValue)"
         case .undefine:
-            return ""
+            outputString = ""
         case .jmp:
-            return "jmp \t \(self.D)"
+            outputString = "jmp \t \(self.D)"
         case .jle:
-            return "jmp \t \(self.D)"
+            outputString = "jle \t \(self.D)"
         case .jl:
-            return "jmp \t \(self.D)"
+            outputString = "jl \t \(self.D)"
         case .je:
-            return "jmp \t \(self.D)"
+            outputString = "je \t \(self.D)"
         case .jne:
-            return "jmp \t \(self.D)"
+            outputString = "jne \t \(self.D)"
         case .jge:
-            return "jmp \t \(self.D)"
+            outputString = "jge \t \(self.D)"
         case .jg:
-            return "jmp \t \(self.D)"
+            outputString = "jg \t \(self.D)"
         }
+        return outputString
     }
 }
