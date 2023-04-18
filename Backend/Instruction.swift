@@ -244,7 +244,7 @@ class Instruction : Identifiable, ObservableObject {
             }
         case .mrmovq:
             if self.rB != .F {
-                outputString = "mrmovq \t \(self.rA.rawValue), \(self.D)(\(self.rB.rawValue))"
+                outputString = "mrmovq \t \(self.D)(\(self.rB.rawValue)), \(self.rA.rawValue)"
             } else {
                 outputString = "mrmovq \t \(self.D), \(self.rA.rawValue)"
             }

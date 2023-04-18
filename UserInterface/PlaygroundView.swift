@@ -8,20 +8,30 @@
 import SwiftUI
 
 struct PlaygroundView: View {
-    @StateObject var game = Game(instructionList: instruction_list, memoryItemList: MemoryBoard.parseMemoryInputString(string: string1))
-    @State var inputCode = ""
+    @StateObject var game : Game
+    @State var memoryText : String
+    @State var leftSideWidth : CGFloat = 0
+    
     var body: some View {
-        HStack{
-            UserTablesView(game: game)
-            InstructionBoardView(game: game)
-        }
+            GeometryReader { geometry in
+                ZStack{
+                    Image("Background").resizable().edgesIgnoringSafeArea(.all)
+                    HStack(alignment: .top, spacing: 20){
+                        Spacer()
+                        UserTableView(game: game).frame(width: {geometry.size.width > geometry.size.height ? 600 : 400}())
+                        InstructionBoardView(game: game, memoryText: memoryText)
+                        Spacer()
+                    }.padding(20)
+                }
+                
+            }
     }
 }
 
 
 struct PlaygroundView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaygroundView()
+        PlaygroundView(game: game_2, memoryText: memoryStringGame2)
     }
 }
 

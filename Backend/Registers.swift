@@ -8,6 +8,7 @@
 import Foundation
 
 enum REGISTER : String, CaseIterable {
+    case rax = "%rax"
     case rcx = "%rcx"
     case rdx = "%rdx"
     case rbx = "%rbx"
@@ -17,11 +18,11 @@ enum REGISTER : String, CaseIterable {
     case rdi = "%rdi"
     case r8 = "%r8"
     case r9 = "%r9"
-    case r10 = "%r10"
-    case r11 = "%r11"
-    case r12 = "%r12"
-    case r13 = "%r13"
-    case r14 = "%r14"
+//    case r10 = "%r10"
+//    case r11 = "%r11"
+//    case r12 = "%r12"
+//    case r13 = "%r13"
+//    case r14 = "%r14"
     case F = ""
 }
 

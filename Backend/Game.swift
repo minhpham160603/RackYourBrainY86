@@ -50,10 +50,11 @@ class Game : ObservableObject {
     
     func validateStep() -> Bool {
         if gameEnd() {
+            print("Oh no game end")
             return true
         }
         var newCounter = userCurrentCounter
-        if validateMemoryBoard() && validateRegisterBoard() {
+        if validateMemoryBoard() && validateRegisterBoard() && virtualMachine.ConditionCode == userConditionCode {
             do {
                 newCounter = virtualMachine.programCounter
                 try virtualMachine.executeCurrentInstruction()

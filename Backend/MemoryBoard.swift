@@ -34,6 +34,14 @@ class MemoryBoard : ObservableObject {
 //    var item_dictionary : [String: Item]
     var items : [Int : Item]
     
+    static func defaultMemoryString() -> [Int: String] {
+        var addressToStringValue : [Int: String] = [:]
+        for i in 0...10 {
+            addressToStringValue[256 + i * 8] = ""
+        }
+        return addressToStringValue
+    }
+    
     init(){
         self.items = [:]
         for i in 0...10 {
@@ -67,7 +75,14 @@ class MemoryBoard : ObservableObject {
     
     static func parseItemString(address: Int, label: String, string: String) -> Item {
         let itemList = string.components(separatedBy: " ").filter{!$0.isEmpty}
-        return Item(address: address, label: label, value: Int(itemList[1]) ?? -1)
+        var int : Int
+        if itemList[1].contains("0x") {
+            int = Int(itemList[1].dropFirst(2), radix: 16) ?? -1
+        } else {
+            int = Int(itemList[1]) ?? -1
+        }
+        
+        return Item(address: address, label: label, value: int)
         
     }
     
