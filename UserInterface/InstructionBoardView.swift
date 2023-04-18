@@ -21,13 +21,15 @@ struct InstructionBoardView : View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color(red: 240/255, green: 243/255, blue: 255/255).opacity(0.77))
         VStack {
-            SheetPopUpButton(label: "Y86 Code", manual: introY86, font: .title3)
-            Spacer()
-            ScrollView{
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(game.virtualMachine.instructionBoard.sorted {$0.key < $1.key}, id: \.key) {
-                        address, instruction in
-                        InstructionView(instruction: instruction, address: address, userCurrentCounter: $game.userCurrentCounter)
+                SheetPopUpButton(label: "Y86 Code", manual: introY86, font: .title3)
+                Spacer()
+            ZStack {
+                ScrollView{
+                    VStack(alignment: .leading, spacing: 8) {
+                        ForEach(game.virtualMachine.instructionBoard.sorted {$0.key < $1.key}, id: \.key) {
+                            address, instruction in
+                            InstructionView(instruction: instruction, address: address, userCurrentCounter: $game.userCurrentCounter)
+                        }
                     }
                 }
             }

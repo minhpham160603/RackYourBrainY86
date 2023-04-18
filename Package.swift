@@ -17,6 +17,7 @@ let package = Package(
             name: "WWDC2023_Draft1",
             targets: ["AppModule"],
             bundleIdentifier: "Minh-Pham.WWDC2023-Draft1",
+            teamIdentifier: "5B5Z6GRXQ4",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .lightningBolt),

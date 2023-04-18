@@ -23,7 +23,6 @@ struct PlaygroundView: View {
                         Spacer()
                     }.padding(20)
                 }
-                
             }
     }
 }

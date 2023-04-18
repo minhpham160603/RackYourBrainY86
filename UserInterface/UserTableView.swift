@@ -40,6 +40,7 @@ struct SheetPopUpButton : View {
             VStack(spacing: 20) {
                 Text(label).font(.title)
                 Text(manual)
+                Button("Dismiss") {showSheet.toggle()}
             }.padding(20)
         })
     }
@@ -50,10 +51,10 @@ struct MidTableView : View {
     var body : some View {
         HStack(alignment: .top){
             VStack {
-                SheetPopUpButton(label: "Program Counter", manual: CCManual)
+                SheetPopUpButton(label: "Program Counter", manual: "Program pointer point to the current instruction's address.")
                 NormalText("0x" + String(format: "%02X", game.userCurrentCounter)).padding(10).multilineTextAlignment(.center).background(.white).cornerRadius(12)           }
             VStack{
-                SheetPopUpButton(label: "Condition Code", manual: "How to set this")
+                SheetPopUpButton(label: "Condition Code", manual: CCManual)
                 HStack {
                     VStack{
                         NormalText("OF")

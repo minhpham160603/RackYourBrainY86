@@ -8,11 +8,6 @@ struct ContentView: View {
         return Group {
             if gotoGame == 0 {
                 ZStack{
-//                    LinearGradient(gradient: Gradient(colors: [Color.blue, Color.white]),
-//                            startPoint: .topLeading,
-//                            endPoint: .bottomTrailing
-//                        )
-//                        .edgesIgnoringSafeArea(.all)
                     Image("Background").resizable().edgesIgnoringSafeArea(.all)
                     VStack(spacing: 30){
                         Text("Welcome to the Y86Rackyourbrain Paradise").font(.largeTitle).bold()
@@ -47,19 +42,38 @@ struct ContentView: View {
                 }
             } else if gotoGame == 1 {
                 PlaygroundView(game: game_1, memoryText: memoryStringGame1)
-                Button(action: {
-                    gotoGame = 0
-                }, label: {Text("Go Home").foregroundColor(.blue)})
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        gotoGame = 0
+                    }, label: {Text("Go Home").foregroundColor(.blue)})
+                    Spacer()
+                    ManualSheetPopUp()
+                    Spacer()
+                }
+                
             } else if gotoGame == 2 {
                 PlaygroundView(game: game_2, memoryText: memoryStringGame2)
-                Button(action: {
-                    gotoGame = 0
-                }, label: {Text("Go Home").foregroundColor(.blue)})
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        gotoGame = 0
+                    }, label: {Text("Go Home").foregroundColor(.blue)})
+                    Spacer()
+                    ManualSheetPopUp()
+                    Spacer()
+                }
             } else if gotoGame == 3 {
                 PlaygroundView(game: game_3, memoryText: memoryStringGame3)
-                Button(action: {
-                    gotoGame = 0
-                }, label: {Text("Go Home").foregroundColor(.blue)})
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        gotoGame = 0
+                    }, label: {Text("Go Home").foregroundColor(.blue)})
+                    Spacer()
+                    ManualSheetPopUp()
+                    Spacer()
+                }
             }
         }
     }
