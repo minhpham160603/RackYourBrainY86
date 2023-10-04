@@ -1,8 +1,8 @@
-# Swift-Student-Challenge-2023
+# Y86RackYourBrain
 
 ## Description
 
-The Y86Rackyourbrain is an app that allows users to learn Y86 assembly code by manually executing the instruction and checking its accuracy using a virtual machine. The app has a range of features that make it both user-friendly and informative.
+The Y86Rackyourbrain is an app that allows users to learn Y86 assembly code by manually executing the instructions and checking its accuracy using a virtual machine. The app has a range of features that make it user-friendly and informative.
 
 The app uniquely includes a game, which contains a virtual machine, a user’s register board, a condition code board, and a memory board. At each step, users manually set the values of registers, memory tables, and condition codes, to match with the virtual machine. This helps them to better understand the Y86 code and provides them with a more immersive and interactive learning experience.
 
